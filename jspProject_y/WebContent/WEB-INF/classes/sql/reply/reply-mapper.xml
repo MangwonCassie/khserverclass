@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+	<!-- 타입이 다르기 때문에 무조건 서브쿼리를 써야해... -->
+	<entry key="">
+		INSERT INTO REPLY (REPLY_NO,REPLY_CONTENT,REF_BNO,REPLY_WRITER) VALUES (SEQ.RNO, ?, ?, ?)
+	</entry>
+	
+	<!-- INSERT문에도 서브쿼리문을 쓸 수 있는지 몰랐음 , NEXTVVAL도 안함-->
+	<entry key="insertReply">
+	
+		INSERT INTO REPLY(REPLY_NO,REPLY_CONTENT,REF_BNO,REPLY_WRITER)
+		VALUES(SEQ_RNO.NEXTVAL,?,?,
+		(SELECT USER_NO FROM MEMBER WHERE USER_ID=?))
+	
+	</entry>
+	
+	<entry key="selectReply">
+	
+	SELECT 	REPLY_NO, REPLY_CONTENT, REPLY_WRITER, USER_ID, CREATE_DATE
+	FROM REPLY R
+	JOIN MEMBER M ON M.USER_NO = R.REPLY_WRITER
+	WHERE REF_BNO = ?
+	AND R.STATUS = 'Y'
+	
+	</entry>
+	
+	
+</properties>

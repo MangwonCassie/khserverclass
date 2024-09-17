@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="memberMapper"> <!-- namespace : mapper 고유 별칭 -->
+	  
+	  <!-- 
+	  	*DML 구문일 경우
+	  	<insert id="sql문의 식별자" parameterType="전달값에 대한 타입(자바풀클래스명)또는 별칭"></insert>
+	  	<update></update>
+	  	<delete></delete>
+	  
+	  -parameterType은 전달값이 없으면 생략 가능
+	  -update/delete도 같음 
+	  
+	  	*SELECT 구문일 경우
+	  <select id="sql문의 식별자" parameterType="전달받은타입 또는 별칭"
+	  			resultType="조회결과 반환타입" resultMap="조회결과를 추출해 매핑시킬 resultMap의 id값">
+	
+	
+		***resultMap : 마이바티스 핵심기능 중 하나로 ResultSet으로부터 조회된 컬럼값을 하나씩 추출하여 지정한 VO객체 필드에 담아주는 역할 수행
+		
+		<resultMap id="식별자" type="조회된결과를 담아 반환하고자하는 VO객체 풀클래스명 또는 별칭">
+			<result column="조회결과를 추출할 DB컬럼명" property="해당 결과를 담고자하는 필드명"/>
+			<result column="조회결과를 추출할 DB컬럼명" property="해당 결과를 담고자하는 필드명"/>
+			....
+		</resultMap>
+	   -->
+	   
+	   <select id="selectMember" parameterType="member" resultMap="memberResultSet">
+	   		SELECT * 
+	   		FROM MEMBER
+	   		WHERE USER_ID = #{userId}
+	   		AND USER_PWD = #{userPwd}
+	   		AND STATUS = 'Y' 
+	   </select>
+	   
+	   <resultMap type="member" id="memberResultSet">
+	   		<result column="USER_NO" property="userNo"/>
+	   		<result column="USER_ID" property="userId"/>
+	   		<result column="USER_PWD" property="userPwd"/>
+	   		<result column="USER_NAME" property="userName"/>
+	   		<result column="EMAIL" property="email"/>
+	   		<result column="BIRTHDAY" property="birthday"/>
+	   		<result column="GENDER" property="gender"/>
+	   		<result column="PHONE" property="phone"/>
+	   		<result column="ADDRESS" property="address"/>
+	   		<result column="ENROLL_DATE" property="enrollDate"/>
+	   		<result column="MODIFY_DATE" property="modifyDate"/>
+	   		<result column="STATUS" property="status"/>
+	   </resultMap>
+	   
+	   
+  	
+<!--   	<insert id="insertMember" parameterType="com.kh.mybatis.member.model.vo.Member"> -->
+  	<insert id="insertMember" parameterType="member">
+  		INSERT INTO MEMBER(USER_NO
+						  ,USER_ID
+						  ,USER_PWD
+						  ,USER_NAME
+						  ,EMAIL
+						  ,BIRTHDAY
+						  ,GENDER
+						  ,PHONE
+						  ,ADDRESS)
+					VALUES(SEQ_UNO.NEXTVAL
+						   ,#{userId}
+						   ,#{userPwd}
+						   ,#{userName}
+						   ,#{email}
+						   ,#{birthday}
+						   ,#{gender}
+						   ,#{phone}
+						   ,#{address})
+  	</insert>
+
+	
+
+
+
+
+</mapper>
